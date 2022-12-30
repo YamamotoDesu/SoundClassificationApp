@@ -17,6 +17,8 @@ struct ContentView: View {
     @State private var recording: Bool = false
     @State private var allowed: Bool = false
     @State private var classification: String = ""
+
+    private let audioClasifier = AudioClassifier(model: SoundClassifier_1().model)
     
     let emojis = ["cow":"🐮","dog":"🐶"]
 
@@ -62,7 +64,12 @@ struct ContentView: View {
             
             Button("Classify") {
                 
-               
+                self.audioClasifier?.classify(audioFiles: self.audioFilePath) { result in
+                    
+                    if let result = result {
+                        self.classification = result
+                    }
+                }
                  
                 
             }.padding()
